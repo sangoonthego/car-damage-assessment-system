@@ -19,7 +19,7 @@ const ResultDisplay = ({ result }) => {
       {}
       <div className="p-4 bg-white shadow-lg rounded-xl">
         <h3 className="text-xl font-semibold mb-3">
-          🖼️ Ảnh Kết Quả ({result.type.toUpperCase()})
+          🖼️ Result Image ({result.type.toUpperCase()})
         </h3>
         {imageUrl ? (
           <img
@@ -30,7 +30,7 @@ const ResultDisplay = ({ result }) => {
           />
         ) : (
           <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg">
-            Không thể tải ảnh kết quả.
+            Cannot Load Result Image
           </div>
         )}
       </div>
@@ -38,7 +38,7 @@ const ResultDisplay = ({ result }) => {
       {}
       <div className="p-4 bg-white shadow-lg rounded-xl">
         <h3 className="text-xl font-semibold mb-3">
-          📄 Dữ Liệu Dự Đoán (JSON)
+          📄 Prediction Data (JSON)
         </h3>
         <pre className="bg-gray-800 text-green-400 p-4 rounded-lg overflow-x-auto text-sm max-h-[500px]">
           {formatJson(result)}
