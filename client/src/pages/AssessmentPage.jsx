@@ -58,7 +58,7 @@ const AssessmentPage = () => {
 
       {/* Control Section */}
       <div className="bg-white p-6 shadow-xl rounded-2xl">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center">
+        <h2 className="text-2xl text-indigo-700 font-semibold mb-4 flex items-center">
           <AiOutlineSearch className="mr-2" /> Analysis Settings
         </h2>
 
@@ -130,8 +130,8 @@ const AssessmentPage = () => {
       {/* Result Section */}
       {result && (
         <>
-          <h2 className="text-2xl font-semibold mt-10 mb-4 text-center">
-            ✨ Analysis Result
+          <h2 className="text-2xl text-indigo-700 font-semibold mt-10 mb-4 text-center">
+            Analysis Result
           </h2>
           <ResultDisplay result={result} />
         </>
