@@ -16,7 +16,7 @@ const ResultDisplay = ({ result }) => {
 
   return (
     <div className="mt-8 grid md:grid-cols-2 gap-8">
-      {/* Cột 1: Hiển thị Ảnh */}
+      {}
       <div className="p-4 bg-white shadow-lg rounded-xl">
         <h3 className="text-xl font-semibold mb-3">
           🖼️ Ảnh Kết Quả ({result.type.toUpperCase()})
@@ -26,7 +26,7 @@ const ResultDisplay = ({ result }) => {
             src={imageUrl}
             alt="Kết quả phân tích"
             className="w-full h-auto max-h-[500px] object-contain rounded-lg border"
-            onError={() => setImageUrl("")} // Xử lý lỗi nếu ảnh không load được
+            onError={() => setImageUrl("")} 
           />
         ) : (
           <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg">
@@ -35,7 +35,7 @@ const ResultDisplay = ({ result }) => {
         )}
       </div>
 
-      {/* Cột 2: Hiển thị JSON */}
+      {}
       <div className="p-4 bg-white shadow-lg rounded-xl">
         <h3 className="text-xl font-semibold mb-3">
           📄 Dữ Liệu Dự Đoán (JSON)
