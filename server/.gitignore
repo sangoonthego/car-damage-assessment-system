@@ -5,7 +5,11 @@
 /build
 /dist
 
+/src/seeds
+
 npm-debug.log*
 .npm
 
 /uploads
+
+/static
