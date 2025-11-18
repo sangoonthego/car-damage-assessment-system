@@ -2,11 +2,15 @@ import React, { useState, useMemo } from "react";
 import Dropzone from "../components/Dropzone";
 import ResultDisplay from "../components/ResultDisplay";
 import { runAssessment } from "../api/ai";
-import { AiOutlineSearch, AiOutlineCloudUpload, AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+  AiOutlineSearch,
+  AiOutlineCloudUpload,
+  AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 
 const AssessmentPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [mode, setMode] = useState("detect"); 
+  const [mode, setMode] = useState("detect");
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +25,7 @@ const AssessmentPage = () => {
 
   const handleFileSelect = (file) => {
     setSelectedFile(file);
-    setResult(null);  
+    setResult(null);
     setError(null);
   };
 
@@ -50,15 +54,15 @@ const AssessmentPage = () => {
   return (
     <div className="container mx-auto p-4 max-w-6xl">
       {/* Header */}
-      <header className="text-center py-6 border-b mb-6">
-        <h1 className="text-3xl font-bold text-indigo-700">
+      <header className="text-center py-6 border-b border-gray-200 mb-6">
+        <h1 className="text-3xl font-bold text-[#1E3D59]">
           Car Damage Assessment System
         </h1>
       </header>
 
       {/* Control Section */}
       <div className="bg-white p-6 shadow-xl rounded-2xl">
-        <h2 className="text-2xl text-indigo-700 font-semibold mb-4 flex items-center">
+        <h2 className="text-2xl text-[#1E3D59] font-semibold mb-4 flex items-center">
           <AiOutlineSearch className="mr-2" /> Analysis Settings
         </h2>
 
@@ -70,7 +74,7 @@ const AssessmentPage = () => {
           <select
             value={mode}
             onChange={(e) => setMode(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-500px bg-[#1E3D59] p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#61DAFB] focus:border-[#61DAFB]"
             disabled={isLoading}
           >
             {modeOptions.map((option) => (
@@ -86,7 +90,7 @@ const AssessmentPage = () => {
 
         {/* Selected File Info */}
         {selectedFile && (
-          <div className="mt-4 p-3 bg-indigo-50 border-l-4 border-indigo-500 text-indigo-700 rounded-md">
+          <div className="mt-4 p-3 bg-[#E0F7FA] border-l-4 border-[#1E3D59] text-[#1E3D59] rounded-md">
             <p className="font-medium">
               Selected file: <strong>{selectedFile.name}</strong>
             </p>
@@ -100,11 +104,12 @@ const AssessmentPage = () => {
         <button
           onClick={handleSubmit}
           disabled={!selectedFile || isLoading}
-          className={`w-full mt-6 py-3 px-4 rounded-lg text-lg font-bold transition-all flex justify-center items-center ${
-            !selectedFile || isLoading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700 text-white shadow-md"
-          }`}
+          className={`w-full mt-6 py-3 px-4 rounded-lg text-lg font-bold transition-all flex justify-center items-center 
+            ${
+              !selectedFile || isLoading
+                ? "bg-gray-400 cursor-not-allowed text-gray-700"
+                : "bg-[#2E8B57] hover:bg-[#3A5A40] text-white shadow-md"
+            }`}
         >
           {isLoading ? (
             <>
@@ -120,7 +125,7 @@ const AssessmentPage = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="mt-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md">
+          <div className="mt-4 p-3 bg-[#FFECED] border-l-4 border-[#A11D33] text-[#A11D33] rounded-md">
             <p className="font-medium">Error:</p>
             <p>{error}</p>
           </div>
@@ -130,20 +135,21 @@ const AssessmentPage = () => {
       {/* Result Section */}
       {result && (
         <>
-          <h2 className="text-2xl text-indigo-700 font-semibold mt-10 mb-4 text-center">
+          <h2 className="text-2xl text-[#1E3D59] font-semibold mt-10 mb-4 text-center">
             Analysis Result
           </h2>
           <ResultDisplay result={result} />
         </>
       )}
 
-      {/* Footer Note */}
-      <div className="mt-12 p-6 bg-white border-t pt-8 rounded-b-xl shadow-inner">
-        <p className="text-center text-gray-600 font-medium mb-2">
+      {/* Footer */}
+      <div className="mt-12 p-6 bg-white border-t border-gray-200 pt-8 rounded-b-xl shadow-inner">
+        <p className="text-center text-gray-700 font-medium mb-2">
           **Car Damage Assessment System**
         </p>
-        <p className="text-center text-sm text-gray-500 italic">
-          The application uses the YOLOv8 model to detect and segment car damage (broken glass, dents, scratches) through images.
+        <p className="text-center text-sm text-gray-600 italic">
+          The application uses the YOLOv8 model to detect and segment car
+          damage (broken glass, dents, scratches) through images.
         </p>
         <p className="text-center text-sm text-gray-700 mt-4">
           Developed by Nguyen Tuan Ngoc

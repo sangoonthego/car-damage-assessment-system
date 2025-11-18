@@ -2,13 +2,34 @@ import User from "../models/User.js";
 import Role from "../models/Role.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT || 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// gen otp
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
 export const registerUser = async ({ firstname, lastname, username, email, password, phone }) => {
+  const existingUser = await User.findOne({ email });
+  if (existingUser) throw new Error("Email already registered");
+
   const hashed = await bcrypt.hash(password, 10);
+
   const defaultRole = await Role.findOne({ name: "Client" });
   if (!defaultRole) throw new Error("Default role 'Client' not found");
+
+  const otp = generateOTP();
+  const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
   const user = await User.create({
     firstname,
@@ -18,6 +39,9 @@ export const registerUser = async ({ firstname, lastname, username, email, passw
     passwordHash: hashed,
     phone,
     roleId: defaultRole._id,
+    otp,
+    otpExpires,
+    isVerified: false
   });
 
   // create JWT

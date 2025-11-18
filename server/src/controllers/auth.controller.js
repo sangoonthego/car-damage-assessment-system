@@ -10,9 +10,9 @@ export const register = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) 
-      return res.status(400).json({ message: "Email already registered" });
+    // const existingUser = await User.findOne({ email });
+    // if (existingUser) 
+    //   return res.status(400).json({ message: "Email already registered" });
 
     const user = await authService.registerUser(req.body);
     res.status(201).json(user);
