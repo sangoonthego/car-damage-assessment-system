@@ -1,30 +1,17 @@
-// import AssessmentPage from './pages/AssessmentPage';
-// import { LandingPage } from './pages/landing/LandingPage';
-
-// function App() {
-//   return (
-//     <div className="min-h-screen bg-gray-100">
-//       <AssessmentPage />
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LandingPage } from './pages/landing/LandingPage';
 import { LoginPage } from './pages/login/LoginPage';
 import { SignupPage } from './pages/signup/SignupPage';
 import AssessmentPage from './pages/AssessmentPage';
 
-export default function App() {
+export function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/assessment" element={<AssessmentPage />} />
+        <Route path="/home" element={<AssessmentPage />} />
         <Route path="*" element={<LandingPage />} />
       </Routes>
     </Router>
