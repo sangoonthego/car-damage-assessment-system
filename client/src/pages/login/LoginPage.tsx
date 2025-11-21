@@ -7,14 +7,38 @@ import { Checkbox } from '../../components/ui/checkbox';
 import { ImageWithFallback } from '../../components/figma/ImageWithFallback';
 import { Sparkles, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("Login Success: ", data);
+        localStorage.setItem("token", data.token);
+        alert("Login Successfully!!!");
+
+        navigate("/assessment");
+      } else {
+        alert("Error: " + data.message);
+      } 
+    } catch (err) {
+      console.error(err);
+      alert("Server Connecting Error!!!");
+    }
     console.log('Login:', { email, password });
   };
 
@@ -33,7 +57,7 @@ export function LoginPage() {
               <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
-              <span className="text-slate-900 tracking-tight">CarAssess AI</span>
+              <span className="text-slate-900 tracking-tight">Car Damage Assessment</span>
             </div>
             
             <h1 className="text-slate-900 mb-2">アカウントにログイン</h1>

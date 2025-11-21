@@ -7,19 +7,48 @@ import { Checkbox } from '../../components/ui/checkbox';
 import { ImageWithFallback } from '../../components/figma/ImageWithFallback';
 import { Sparkles, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function SignupPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState({
+  firstname: '',
+  lastname: '',
+  username: '',
+  email: '',
+  phone: '',
+  password: '',
+  confirmPassword: ''
+});
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle signup logic here
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("User Registered:", data);
+        localStorage.setItem("token", data.token);
+        alert("Signup Successfully!!!");
+
+        navigate("/login");
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (err) { 
+      console.error(err);
+      alert("Server Connecting Error!!!");
+    }
+
     console.log('Signup:', formData);
   };
 
@@ -97,7 +126,7 @@ export function SignupPage() {
               <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
-              <span className="text-slate-900 tracking-tight">CarAssess AI</span>
+              <span className="text-slate-900 tracking-tight">Car Damage Assessment</span>
             </div>
             
             <h1 className="text-slate-900 mb-2">アカウントを作成</h1>
@@ -112,12 +141,38 @@ export function SignupPage() {
           <Card className="p-8 border-slate-200 shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="name">お名前</Label>
+                <Label htmlFor="firstname">名</Label>
                 <Input
-                  id="name"
+                  id="firstname"
                   type="text"
-                  placeholder="山田 太郎"
-                  value={formData.name}
+                  placeholder="First Name"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  required
+                  className="h-11"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="lastname">姓</Label>
+                <Input
+                  id="lastname"
+                  type="text"
+                  placeholder="Last Name"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  required
+                  className="h-11"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="username">ユーザー名</Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="username123"
+                  value={formData.username}
                   onChange={handleChange}
                   required
                   className="h-11"
@@ -129,7 +184,7 @@ export function SignupPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="name@company.com"
+                  placeholder="name@gmail.com"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -138,12 +193,12 @@ export function SignupPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="company">会社名（任意）</Label>
+                <Label htmlFor="phone">電話番号</Label>
                 <Input
-                  id="company"
-                  type="text"
-                  placeholder="株式会社サンプル"
-                  value={formData.company}
+                  id="phone"
+                  type="tel"
+                  placeholder="09012345678"
+                  value={formData.phone}
                   onChange={handleChange}
                   className="h-11"
                 />
@@ -154,7 +209,7 @@ export function SignupPage() {
                 <Input
                   id="password"
                   type="password"
-                  placeholder="8文字以上"
+                  placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -167,7 +222,7 @@ export function SignupPage() {
                 <Input
                   id="confirmPassword"
                   type="password"
-                  placeholder="再度入力してください"
+                  placeholder="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
@@ -181,7 +236,7 @@ export function SignupPage() {
                   htmlFor="terms" 
                   className="cursor-pointer text-slate-600"
                 >
-                  <a href="#" className="text-red-600 hover:text-red-700 transition-colors">利用規約</a>
+                  <a href="#" className="text-red-600 hover:text-red-700 transition-colors border-0">利用規約</a>
                   および
                   <a href="#" className="text-red-600 hover:text-red-700 transition-colors">プライバシーポリシー</a>
                   に同意します
@@ -189,8 +244,8 @@ export function SignupPage() {
               </div>
 
               <Button 
-                type="submit" 
-                className="w-full h-11 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white"
+                type="submit"
+                className="w-full h-11 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 border-0 text-white"
               >
                 無料トライアルを開始
               </Button>
