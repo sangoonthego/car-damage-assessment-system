@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
     avatar: { type: String, default: "" },
     phone: { type: String, required: true, unique: true },
     birthday: { type: Date, default: "" },
-    company: { type: String },
-    address: { type: String },
+    company: { type: String, default: "" },
+    address: { type: String, default: "" },
 
     // mail
     isVerified: { type: Boolean, default: false },

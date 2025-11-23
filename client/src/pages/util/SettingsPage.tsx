@@ -125,45 +125,48 @@ export function SettingsPage() {
           </div>
           <h3 className="text-slate-900">表示設定</h3>
         </div>
+        
+        <div className='flex-1 space-y-6'>
+          <div className='grid md:grid-cols-2 gap-6'>
+            <div className="space-y-2">
+              <Label>テーマ</Label>
+              <Select 
+                value={preferences.theme} 
+                onValueChange={(value) => 
+                  setPreferences({ ...preferences, theme: value })
+                }
+              >
+                <SelectTrigger>
+                  <Moon className='w-4 h-4 mr-2' />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light" className='text-slate-700'>ライトモード</SelectItem>
+                  <SelectItem value="dark" className='text-slate-700'>ダークモード</SelectItem>
+                  <SelectItem value="auto" className='text-slate-700'>システム設定に従う</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label>テーマ</Label>
-            <Select 
-              value={preferences.theme} 
-              onValueChange={(value) => 
-                setPreferences({ ...preferences, theme: value })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">ライトモード</SelectItem>
-                <SelectItem value="dark">ダークモード</SelectItem>
-                <SelectItem value="auto">システム設定に従う</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label>言語</Label>
-            <Select 
-              value={preferences.language} 
-              onValueChange={(value) => 
-                setPreferences({ ...preferences, language: value })
-              }
-            >
-              <SelectTrigger>
-                <Globe className="w-4 h-4 mr-2" />
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ja">日本語</SelectItem>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="vi">Tiếng Việt</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <Label>言語</Label>
+              <Select 
+                value={preferences.language} 
+                onValueChange={(value) => 
+                  setPreferences({ ...preferences, language: value })
+                }
+              >
+                <SelectTrigger>
+                  <Globe className="w-4 h-4 mr-2" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ja" className='text-slate-700'>日本語</SelectItem>
+                  <SelectItem value="en" className='text-slate-700'>English</SelectItem>
+                  <SelectItem value="vi" className='text-slate-700'>Tiếng Việt</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </Card>
@@ -205,6 +208,7 @@ export function SettingsPage() {
               onCheckedChange={(checked) => 
                 setPreferences({ ...preferences, highQuality: checked })
               }
+              className='bg-slate-400'
             />
           </div>
         </div>

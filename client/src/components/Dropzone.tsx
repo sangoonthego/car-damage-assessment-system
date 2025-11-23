@@ -132,7 +132,7 @@ export function Dropzone({ onFileSelect }: DropzoneProps) {
           <button
             type="button"
             onClick={open}
-            className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg transition-all shadow-md hover:shadow-lg"
+            className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 border-0 text-white rounded-lg transition-all shadow-md hover:shadow-lg hover:shadow-red-200"
           >
             ファイルを選択
           </button>
