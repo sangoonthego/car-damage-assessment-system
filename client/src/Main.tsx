@@ -1,19 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LandingPage } from './pages/landing/LandingPage';
-import { LoginPage } from './pages/login/LoginPage';
-import { SignupPage } from './pages/signup/SignupPage';
-import AssessmentPage from './pages/AssessmentPage';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
 
-export function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/home" element={<AssessmentPage />} />
-        <Route path="*" element={<LandingPage />} />
-      </Routes>
-    </Router>
-  );
-}
+import './tailwind.css';
+import './global.css';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

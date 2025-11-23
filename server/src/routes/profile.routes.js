@@ -15,6 +15,8 @@ router.get(
 
 router.put("/", authMiddleware, profileController.updateProfile);
 
+router.get("/me", authMiddleware, profileController.getMyProfile);
+
 router.post(
   "/avatar",
   authMiddleware,
