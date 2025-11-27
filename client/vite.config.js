@@ -1,24 +1,26 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tailwindVitePlugin from '@tailwindcss/vite'; // Import plugin Vite của Tailwind
+import path from 'path'; // FIX: Must import the 'path' module
+// import tailwindVitePlugin from '@tailwindcss/vite'; // Removed unnecessary import
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    // Nếu bạn đang dùng @tailwindcss/vite, hãy thêm nó vào đây
-    // Lưu ý: Thông thường chỉ cần plugin PostCSS trong postcss.config.js là đủ.
-    // Nếu gặp lỗi, bạn có thể thử bỏ qua dòng này.
-    // tailwindVitePlugin(), 
+    // tailwindVitePlugin is usually not needed here if PostCSS is configured
   ],
-  // Thiết lập proxy cho backend (đã có trong package.json, nhưng đôi khi cần ở đây)
+  resolve: {
+    alias: {
+      // FIX: The path.resolve now works because 'path' is imported
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  // Proxy configuration for backend API (kept for reference)
   server: {
     proxy: {
       '/api': {
         target: 'http://localhost:3636',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, '') // Có thể cần hoặc không
       }
     }
   }
