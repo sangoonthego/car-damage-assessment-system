@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import dotenv from "dotenv";
+import BlacklistToken from "../models/BlacklistToken.js";
 
 const authMiddleware = async (req, res, next) => {
     // get token from header
@@ -10,6 +11,12 @@ const authMiddleware = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
+
+    //check blacklist
+    const isBlacklisted = await BlacklistToken.findOne({ token });
+    if (isBlacklisted) {
+        return res.status(401).json({ message: "Token expired or logged out" });
+    }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
