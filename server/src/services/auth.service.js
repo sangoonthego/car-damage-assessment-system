@@ -1,7 +1,8 @@
 import User from "../models/User.js";
 import Role from "../models/Role.js";
+import BlacklistToken from "../models/BlacklistToken.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
@@ -94,3 +95,20 @@ export const loginUser = async ({ email, password }) => {
     token,
   };
 };
+
+export const logoutUser = async (token) => {
+  if (!token) throw new Error("No token Provided!!!");
+
+  const decoded = jwt.decode(token);
+  if (!decoded) throw new Error("Invalid Token!!!");
+
+  await BlacklistToken.create({
+    token,
+    expiresAt: new Date(decoded.exp * 1000) // time org expire
+  });
+
+  return {
+    success: true,
+    message: "Logged out Successfully!!!"
+  }
+}
