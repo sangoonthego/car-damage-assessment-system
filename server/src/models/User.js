@@ -7,9 +7,13 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
     roleId: { type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true },
+
+    // profile
     avatar: { type: String, default: "" },
     phone: { type: String, required: true, unique: true },
     birthday: { type: Date, default: "" },
+    company: { type: String, default: "" },
+    address: { type: String, default: "" },
 
     // mail
     isVerified: { type: Boolean, default: false },

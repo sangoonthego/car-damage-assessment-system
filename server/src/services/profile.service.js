@@ -16,6 +16,8 @@ class ProfileService {
         if (data.phone) updateData.phone = data.phone;
         if (data.birthday) updateData.birthday = data.birthday;
         if (data.avatar) updateData.avatar = data.avatar;
+        if (data.address) updateData.address = data.address;
+        if (data.company) updateData.company = data.company;
 
         // change pass
         if (data.password) {
@@ -27,7 +29,7 @@ class ProfileService {
     }
 
     static async updateAvatar(userId, avatarPath) {
-        return await User.findByIdAndUpdate(userId, { avatar: avatarPath}, { new: true}).select("-passwordHash");
+        return await User.findByIdAndUpdate(userId, { avatar: avatarPath}, { new: true }).select("-passwordHash");
     }
 }
 

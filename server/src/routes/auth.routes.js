@@ -1,7 +1,9 @@
-const express = require("express");
+import express from "express";
+import { body } from "express-validator";
+
+import { register, login } from "../controllers/auth.controller.js";
+
 const router = express.Router();
-const { register, login } = require("../controllers/auth.controller");
-const { body } = require("express-validator");
 
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 const emailRegex = /^[A-Za-z0-9._%+-]{6,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -32,10 +34,13 @@ router.post(
 router.post(
   "/login",
   [
-    body("email").notEmpty().withMessage("Email is required").matches(emailRegex).withMessage("Invalid email format"),
-    body("password").notEmpty().withMessage("Password is required"),
+    body("email")
+      .notEmpty().withMessage("Email is required")
+      .matches(emailRegex).withMessage("Invalid email format"),
+    body("password")
+      .notEmpty().withMessage("Password is required"),
   ],
   login
 );
 
-module.exports = router;
+export default router;

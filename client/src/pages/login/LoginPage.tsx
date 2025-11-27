@@ -29,7 +29,7 @@ export function LoginPage() {
       if (data.success) {
         console.log("Login Success: ", data);
         localStorage.setItem("token", data.token);
-        alert("Login Successfully!!!");
+        // alert("Login Successfully!!!");
 
         navigate("/assessment");
       } else {
