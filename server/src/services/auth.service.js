@@ -110,5 +110,5 @@ export const logoutUser = async (token) => {
   return {
     success: true,
     message: "Logged out Successfully!!!"
-  }
-}
+  };
+};

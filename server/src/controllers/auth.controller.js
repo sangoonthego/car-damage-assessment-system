@@ -42,7 +42,7 @@ export const logout = async (req, res) => {
     }
 
     const token = authHeader.split(" ")[1];
-    const result = await logoutUser(token);
+    const result = await authService.logoutUser(token);
 
     res.json(result);
   } catch (err) {
