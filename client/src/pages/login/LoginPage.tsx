@@ -15,32 +15,49 @@ export function LoginPage() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle login logic here
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  e.preventDefault();
 
-      const data = await response.json();
+  try {
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (data.success) {
-        console.log("Login Success: ", data);
-        localStorage.setItem("token", data.token);
-        // alert("Login Successfully!!!");
+    const data = await response.json();
 
-        navigate("/assessment");
-      } else {
-        alert("Error: " + data.message);
-      } 
-    } catch (err) {
-      console.error(err);
-      alert("Server Connecting Error!!!");
+    if (data.success) {
+      console.log("Login Success: ", data);
+      localStorage.setItem("token", data.token);
+
+      // Safely get role name
+      const roleName = data.user?.roleId?.name ?? "";
+
+      // Navigate based on role
+      switch (roleName) {
+        case "Client":
+          navigate("/client/assessment");
+          break;
+        case "Assessor":
+          navigate("/assessor/queue");
+          break;
+        case "Admin":
+          navigate("/admin/dashboard");
+          break;
+        default:
+          navigate("/");
+          break;
+      }
+    } else {
+      alert("Error: " + data.message);
     }
-    console.log('Login:', { email, password });
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Server Connecting Error!!!");
+  }
+
+  console.log('Login Attempt:', { email, password });
+};
 
   return (
     <div className="min-h-screen bg-slate-50 flex">

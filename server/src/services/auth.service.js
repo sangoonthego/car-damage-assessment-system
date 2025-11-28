@@ -90,9 +90,14 @@ export const loginUser = async ({ email, password }) => {
 
   return {
     success: true,
-    roleValue,
-    userId: user._id,
     token,
+    user: {
+      id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      roleId: user.roleId, // đã populated
+    },
   };
 };
 
