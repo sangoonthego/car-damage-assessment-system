@@ -81,10 +81,10 @@ export const loginUser = async ({ email, password }) => {
 
   //const roleValue = user.roleId.name === "Admin" ? 2 : 1;
   const roleMap = {
-  "Client": 1,
-  "Admin": 2,
-  "Assessor": 3
-};
+    "Client": 1,
+    "Admin": 2,
+    "Assessor": 3
+  };
 
   const roleValue = roleMap[user.roleId.name] || 0;
 
