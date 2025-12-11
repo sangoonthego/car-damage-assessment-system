@@ -1,213 +1,244 @@
+import { AdminLayout } from '../../components/layout/AdminLayout';
 import { Card } from '../../components/ui/card';
-import { 
-  TrendingUp, 
+import {
+  TrendingUp,
   TrendingDown,
   ScanSearch,
   CheckCircle2,
-  AlertCircle,
   Clock,
-  DollarSign
+  DollarSign,
+  Users,
+  Activity
 } from 'lucide-react';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { useAdminDashboard } from '../../hooks/useAdmin';
 
 export function DashboardPage() {
-  // Mock data for charts
+  const { data, loading, error } = useAdminDashboard();
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-slate-500">読み込み中...</div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-red-500">エラー: {error}</div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  // Mock data for charts (replace with actual data from API)
   const weeklyData = [
-    { name: '月', detect: 12, segment: 8 },
-    { name: '火', detect: 19, segment: 15 },
-    { name: '水', detect: 15, segment: 10 },
-    { name: '木', detect: 25, segment: 18 },
-    { name: '金', detect: 22, segment: 20 },
-    { name: '土', detect: 30, segment: 25 },
-    { name: '日', detect: 28, segment: 22 },
+    { name: '月', detect: 12, segment: 8, total: 20 },
+    { name: '火', detect: 19, segment: 15, total: 34 },
+    { name: '水', detect: 15, segment: 10, total: 25 },
+    { name: '木', detect: 25, segment: 18, total: 43 },
+    { name: '金', detect: 22, segment: 20, total: 42 },
+    { name: '土', detect: 30, segment: 25, total: 55 },
+    { name: '日', detect: 28, segment: 22, total: 50 },
   ];
 
-  const damageTypeData = [
-    { name: '擦り傷', value: 45, color: '#dc2626' },
-    { name: 'へこみ', value: 30, color: '#2563eb' },
-    { name: 'ガラス破損', value: 25, color: '#16a34a' },
-  ];
-
-  const recentAssessments = [
-    { id: 1, type: 'detect', damages: 3, cost: '¥120,000', status: 'completed', time: '2時間前' },
-    { id: 2, type: 'segment', damages: 5, cost: '¥250,000', status: 'completed', time: '4時間前' },
-    { id: 3, type: 'detect', damages: 2, cost: '¥80,000', status: 'completed', time: '6時間前' },
-    { id: 4, type: 'segment', damages: 4, cost: '¥180,000', status: 'processing', time: '8時間前' },
-    { id: 5, type: 'detect', damages: 1, cost: '¥50,000', status: 'completed', time: '1日前' },
+  const statusData = [
+    { name: '完了', value: 156, color: '#10b981' },
+    { name: '処理中', value: 45, color: '#f59e0b' },
+    { name: '保留中', value: 23, color: '#6b7280' },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-slate-900 mb-2">ダッシュボード</h1>
-        <p className="text-slate-600">
-          車両損傷評価システムの統計と最近のアクティビティ
-        </p>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="p-6 border-slate-200 hover:shadow-lg transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
-              <ScanSearch className="w-6 h-6 text-red-600" />
-            </div>
-            <div className="flex items-center gap-1 text-green-600">
-              <TrendingUp className="w-4 h-4" />
-              <span>+12%</span>
-            </div>
-          </div>
-          <p className="text-slate-500 mb-1">今月の評価数</p>
-          <p className="text-slate-900">156件</p>
-        </Card>
-
-        <Card className="p-6 border-slate-200 hover:shadow-lg transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-              <CheckCircle2 className="w-6 h-6 text-blue-600" />
-            </div>
-            <div className="flex items-center gap-1 text-green-600">
-              <TrendingUp className="w-4 h-4" />
-              <span>+8%</span>
-            </div>
-          </div>
-          <p className="text-slate-500 mb-1">完了率</p>
-          <p className="text-slate-900">98.5%</p>
-        </Card>
-
-        <Card className="p-6 border-slate-200 hover:shadow-lg transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
-              <Clock className="w-6 h-6 text-green-600" />
-            </div>
-            <div className="flex items-center gap-1 text-red-600">
-              <TrendingDown className="w-4 h-4" />
-              <span>-15%</span>
-            </div>
-          </div>
-          <p className="text-slate-500 mb-1">平均処理時間</p>
-          <p className="text-slate-900">2.3秒</p>
-        </Card>
-
-        <Card className="p-6 border-slate-200 hover:shadow-lg transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-orange-600" />
-            </div>
-            <div className="flex items-center gap-1 text-green-600">
-              <TrendingUp className="w-4 h-4" />
-              <span>+18%</span>
-            </div>
-          </div>
-          <p className="text-slate-500 mb-1">総修理費用概算</p>
-          <p className="text-slate-900">¥18.5M</p>
-        </Card>
-      </div>
-
-      {/* Charts */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Weekly Assessment Chart */}
-        <Card className="p-6 border-slate-200">
-          <h3 className="text-slate-900 mb-6">週間評価数の推移</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={weeklyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="name" stroke="#64748b" />
-              <YAxis stroke="#64748b" />
-              <Tooltip />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="detect" 
-                stroke="#dc2626" 
-                strokeWidth={2}
-                name="物体検出"
-              />
-              <Line 
-                type="monotone" 
-                dataKey="segment" 
-                stroke="#2563eb" 
-                strokeWidth={2}
-                name="セグメンテーション"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </Card>
-
-        {/* Damage Type Distribution */}
-        <Card className="p-6 border-slate-200">
-          <h3 className="text-slate-900 mb-6">損傷タイプの分布</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={damageTypeData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name} ${percent !== undefined ? (percent * 100).toFixed(0) : 0}%`}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {damageTypeData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-      </div>
-
-      {/* Recent Assessments */}
-      <Card className="p-6 border-slate-200">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-slate-900">最近の評価</h3>
-          <a href="/history" className="text-red-600 hover:text-red-700 transition-colors">
-            すべて表示 →
-          </a>
+    <AdminLayout>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">ダッシュボード</h1>
+          <p className="text-slate-600">
+            システム全体の統計と最近のアクティビティ
+          </p>
         </div>
 
-        <div className="space-y-4">
-          {recentAssessments.map((assessment) => (
-            <div
-              key={assessment.id}
-              className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors"
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  assessment.type === 'detect' ? 'bg-red-50' : 'bg-blue-50'
-                }`}>
-                  <ScanSearch className={`w-5 h-5 ${
-                    assessment.type === 'detect' ? 'text-red-600' : 'text-blue-600'
-                  }`} />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Total Assessments */}
+          <Card className="p-6 border-slate-200 hover:shadow-lg transition-all hover:border-red-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-200">
+                <ScanSearch className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-medium">+12%</span>
+              </div>
+            </div>
+            <p className="text-sm text-slate-500 mb-1">今月の評価数</p>
+            <p className="text-3xl font-bold text-slate-900">156<span className="text-lg text-slate-500 ml-1">件</span></p>
+          </Card>
+
+          {/* Active Users */}
+          <Card className="p-6 border-slate-200 hover:shadow-lg transition-all hover:border-blue-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-medium">+8%</span>
+              </div>
+            </div>
+            <p className="text-sm text-slate-500 mb-1">アクティブユーザー</p>
+            <p className="text-3xl font-bold text-slate-900">1,234<span className="text-lg text-slate-500 ml-1">人</span></p>
+          </Card>
+
+          {/* Completion Rate */}
+          <Card className="p-6 border-slate-200 hover:shadow-lg transition-all hover:border-green-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-200">
+                <CheckCircle2 className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-medium">+3%</span>
+              </div>
+            </div>
+            <p className="text-sm text-slate-500 mb-1">完了率</p>
+            <p className="text-3xl font-bold text-slate-900">98.5<span className="text-lg text-slate-500 ml-1">%</span></p>
+          </Card>
+
+          {/* Revenue */}
+          <Card className="p-6 border-slate-200 hover:shadow-lg transition-all hover:border-orange-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200">
+                <DollarSign className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-medium">+18%</span>
+              </div>
+            </div>
+            <p className="text-sm text-slate-500 mb-1">総修理費用概算</p>
+            <p className="text-3xl font-bold text-slate-900">¥18.5<span className="text-lg text-slate-500 ml-1">M</span></p>
+          </Card>
+        </div>
+
+        {/* Charts Row */}
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Weekly Trend */}
+          <Card className="p-6 border-slate-200">
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-1">週間評価数の推移</h3>
+              <p className="text-sm text-slate-500">過去7日間の評価トレンド</p>
+            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={weeklyData}>
+                <defs>
+                  <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#dc2626" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#dc2626" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="name" stroke="#64748b" />
+                <YAxis stroke="#64748b" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#dc2626"
+                  strokeWidth={2}
+                  fill="url(#colorTotal)"
+                  name="合計"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </Card>
+
+          {/* Status Distribution */}
+          <Card className="p-6 border-slate-200">
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-1">ステータス分布</h3>
+              <p className="text-sm text-slate-500">評価のステータス別内訳</p>
+            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={statusData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="name" stroke="#64748b" />
+                <YAxis stroke="#64748b" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
+                <Bar dataKey="value" fill="#dc2626" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </div>
+
+        {/* Recent Activity */}
+        <Card className="p-6 border-slate-200">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-1">最近のアクティビティ</h3>
+              <p className="text-sm text-slate-500">直近の評価活動</p>
+            </div>
+            <a href="/admin/assessments" className="text-red-600 hover:text-red-700 transition-colors text-sm font-medium">
+              すべて表示 →
+            </a>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              { id: 1, user: '田中太郎', action: '新規評価を提出', time: '5分前', status: 'new' },
+              { id: 2, user: '佐藤花子', action: '評価を完了', time: '15分前', status: 'completed' },
+              { id: 3, user: '鈴木一郎', action: '評価を開始', time: '30分前', status: 'processing' },
+              { id: 4, user: '高橋美咲', action: '新規評価を提出', time: '1時間前', status: 'new' },
+              { id: 5, user: '伊藤健太', action: '評価を完了', time: '2時間前', status: 'completed' },
+            ].map((activity) => (
+              <div
+                key={activity.id}
+                className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors"
+              >
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                  {activity.user.charAt(0)}
                 </div>
-                <div>
-                  <p className="text-slate-900">
-                    {assessment.type === 'detect' ? '物体検出' : 'セグメンテーション'}
-                  </p>
-                  <p className="text-slate-500">
-                    {assessment.damages}箇所 • {assessment.cost} • {assessment.time}
-                  </p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-900">{activity.user}</p>
+                  <p className="text-sm text-slate-500">{activity.action}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-slate-500">{activity.time}</span>
+                  {activity.status === 'completed' && (
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  )}
+                  {activity.status === 'processing' && (
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  )}
+                  {activity.status === 'new' && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
                 </div>
               </div>
-              
-              {assessment.status === 'completed' ? (
-                <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-lg border border-green-200">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>完了</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 px-3 py-1 bg-orange-50 text-orange-700 rounded-lg border border-orange-200">
-                  <Clock className="w-4 h-4" />
-                  <span>処理中</span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </Card>
-    </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </AdminLayout>
   );
 }
