@@ -11,6 +11,8 @@ import notificationRoutes from "./routes/notification.routes.js";
 import damageReportRoutes from "./routes/damageReport.routes.js";
 import manualAssessmentRoutes from "./routes/manualAssessment.routes.js";
 import costEstimateRoutes from "./routes/costEstimate.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
+import assessorRoutes from "./routes/assessor.routes.js";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { fileURLToPath } from "url";
@@ -44,6 +46,8 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/damage-reports", damageReportRoutes);
 app.use("/api/manual-assessment", manualAssessmentRoutes);
 app.use("/api/cost", costEstimateRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/assessor", assessorRoutes);
 
 const PORT = process.env.PORT || 3636;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

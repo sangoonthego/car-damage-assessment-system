@@ -9,4 +9,4 @@ const authorizeRole = (...roles) => {
     }
 }
 
-module.exports = authorizeRole;
+export default authorizeRole;
