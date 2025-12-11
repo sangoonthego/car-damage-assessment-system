@@ -1,7 +1,7 @@
 // services/costEstimate.service.js
 import CostEstimate from "../models/CostEstimate.js";
 import DamageReport from "../models/DamageReport.js";
-import { calculateMaskArea } from "../utils/areaCalculator.js";
+import { calculateMaskArea } from "../models/utils/areaCalculator.js";
 import NotificationService from "./notification.service.js";
 import BillService from "./bill.service.js";
 
@@ -26,7 +26,7 @@ class CostEstimateService {
       partName: cls.name,
       action: "repair",
       quantity: 1,
-      unitCost: 1000000 * area_m2, 
+      unitCost: 1000000 * area_m2,
       laborHours: 2,
       laborRatePerHour: 200000,
       totalCost: 1000000 * area_m2 + 2 * 200000
